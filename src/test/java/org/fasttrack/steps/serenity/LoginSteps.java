@@ -45,4 +45,12 @@ public class LoginSteps  {
     public void errorMessageIsDisplayed(String message){
         Assert.assertTrue(myAccountPage.errorMessageIsDisplayed(message));
     }
+
+    @Step
+    public void login(String email, String pass){
+        navigateToHomepage();
+        navigateToMyAccount();
+        enterCredentials(email, pass);
+        clickOnLoginButton();
+    }
 }

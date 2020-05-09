@@ -16,10 +16,10 @@ public class SearchTest {
     private WebDriver driver;
 
     @Steps
-    SearchSteps searchSteps;
+   private SearchSteps searchSteps;
 
     @Steps
-    LoginSteps loginSteps;
+    private LoginSteps loginSteps;
 
     @Before
     public void proceedToSearch() {
@@ -29,17 +29,42 @@ public class SearchTest {
 
     @Test
     public void invalidSearch() {
-
         searchSteps.typeIntoSearchField("ghighighi");
         searchSteps.clickOnSearchButtonInSearchField();
         searchSteps.searchMessageIsDisplayed("Nothing Found");
-
     }
 
     @Test
     public void validSearch() {
-        searchSteps.typeIntoSearchField("album");
+        String textToSearch = "hoodie";
+        searchSteps.typeIntoSearchField(textToSearch);
         searchSteps.clickOnSearchButtonInSearchField();
-        searchSteps.searchMessageIsDisplayed("Search Results for: album");
+        searchSteps.searchMessageIsDisplayed("Search Results for: " + textToSearch);
+        searchSteps.searchResultsContains(textToSearch);
     }
+
+    @Test
+    public void searchWithASelectedDropDownValue(){
+        searchSteps.typeIntoSearchField("hoodie");
+        searchSteps.selectFromDropDownByIndex(1);
+        searchSteps.clickOnSearchButtonInSearchField();
+        searchSteps.searchResultsContains("hoodie");
+    }
+
+    @Test
+    public void searchForUnknownProduct(){
+        searchSteps.typeIntoSearchField("ray");
+        searchSteps.selectFromDropDownByText("Post");
+        searchSteps.clickOnSearchButtonInSearchField();
+        searchSteps.searchMessageIsDisplayed("Nothing Found");
+    }
+
+    @Test
+    public void searchForASingleLetter(){
+        searchSteps.typeIntoSearchField("h");
+        searchSteps.selectFromDropDownByIndex(0);
+        searchSteps.clickOnSearchButtonInSearchField();
+        searchSteps.searchResultsContains("h");
+    }
+
 }
